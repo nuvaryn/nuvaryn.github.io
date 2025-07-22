@@ -1,0 +1,239 @@
+@import url('https://fonts.googleapis.com/css2?family=Jersey+10&display=swap');
+
+body {
+  margin: 0;
+  background-color: #000;
+  color: white;
+  font-family: 'Jersey 10', sans-serif;
+  overflow: hidden;
+  position: relative;
+  height: 100vh;
+}
+
+#loader, #click-screen {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: #000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+#loader {
+  color: gray;
+  font-size: 2rem;
+}
+
+.dots::after {
+  content: '';
+  display: inline-block;
+  width: 0.5em;
+  animation: dots 1s steps(3, end) infinite;
+}
+
+@keyframes dots {
+  0% { content: ''; }
+  33% { content: '.'; }
+  66% { content: '..'; }
+  100% { content: '...'; }
+}
+
+#click-screen {
+  color: white;
+  font-size: 2rem;
+  cursor: pointer;
+  display: none;
+}
+
+#snow-canvas {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 0;
+  pointer-events: none;
+}
+
+#main-content {
+  display: none;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding-top: 100px;
+  color: white;
+  position: relative;
+  z-index: 10;
+  height: 100vh;
+  box-sizing: border-box;
+}
+
+#title {
+  font-size: 4rem;
+  margin: 0;
+  opacity: 0;
+  transform: translateY(-100px);
+  transition: all 1s ease;
+  user-select: none;
+}
+
+#title.show {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+#subtitle {
+  font-size: 1.5rem;
+  color: gray;
+  opacity: 0;
+  margin-top: 10px;
+  transition: opacity 1s ease, transform 1s ease;
+  transform: translateY(-50px);
+  user-select: none;
+}
+
+#subtitle.show {
+  opacity: 0.7;
+  transform: translateY(0);
+}
+
+.container-wrapper {
+  display: flex;
+  gap: 10px;
+  margin-top: 60px;
+  justify-content: center;
+  opacity: 0;
+  transition: opacity 1s ease;
+  position: relative;
+  z-index: 10;
+}
+
+.container-wrapper.show {
+  opacity: 1;
+}
+
+.content-box {
+  width: 230px;
+  height: 320px;
+  background-color: rgba(17, 17, 17, 0.2);
+  color: white;
+  border: 1px solid gray;
+  border-radius: 10%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  padding: 15px 10px;
+  box-sizing: border-box;
+  transition: box-shadow 0.3s ease;
+  user-select: none;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+}
+
+.content-box:hover {
+  box-shadow: 0 0 15px 5px rgba(255, 255, 255, 0.2);
+}
+
+.pfp {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-bottom: 10px;
+  border: 2px solid gray;
+  flex-shrink: 0;
+}
+
+.name {
+  margin: 0;
+  font-size: 1.8rem;
+  font-weight: 700;
+  margin-bottom: 5px;
+  user-select: none;
+}
+
+.role {
+  margin: 0 0 15px 0;
+  font-size: 1.1rem;
+  color: #bbb;
+  user-select: none;
+}
+
+.quote-section {
+  width: 100%;
+  text-align: center;
+  margin-bottom: 15px;
+}
+
+.quote-line {
+  border: none;
+  height: 1px;
+  background-color: rgba(255, 255, 255, 0.5);
+  margin: 5px 0;
+}
+
+.quote {
+  margin: 0;
+  font-size: 1rem;
+  font-style: italic;
+  color: #ccc;
+  user-select: none;
+}
+
+.social-buttons {
+  display: flex;
+  gap: 10px;
+  margin-top: auto;
+  justify-content: center;
+  align-items: center;
+}
+
+.social-buttons a {
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+
+.social-buttons a:hover {
+  transform: scale(1.1);
+}
+
+.social-buttons img {
+  width: 28px;
+  height: 28px;
+  display: block;
+}
+
+/* New styles for discord and telegram clickable texts */
+
+#extra-subtitles {
+  margin-top: 20px;
+  display: flex;
+  gap: 30px;
+  justify-content: center;
+  opacity: 0;
+  transform: translateY(-50px);
+  transition: opacity 1s ease, transform 1s ease;
+  user-select: none;
+}
+
+#extra-subtitles.show {
+  opacity: 0.7;
+  transform: translateY(0);
+}
+
+#extra-subtitles a.extra-text {
+  text-decoration: none;
+  cursor: pointer;
+  color: gray;
+  font-family: 'Jersey 10', sans-serif;
+  font-size: 1.5rem;
+  user-select: none;
+  transition: color 0.3s ease;
+}
+
+#extra-subtitles a.extra-text:hover {
+  color: white;
+}
