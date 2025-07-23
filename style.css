@@ -5,7 +5,7 @@ body {
   background-color: #000;
   color: white;
   font-family: 'Jersey 10', sans-serif;
-  overflow: hidden;
+  overflow-y: auto;
   position: relative;
   height: 100vh;
 }
@@ -66,7 +66,7 @@ body {
   color: white;
   position: relative;
   z-index: 10;
-  height: 100vh;
+  min-height: 100vh;
   box-sizing: border-box;
 }
 
@@ -108,6 +108,9 @@ body {
   transition: opacity 1s ease;
   position: relative;
   z-index: 10;
+  flex-wrap: nowrap;
+  overflow-x: auto;
+  padding-bottom: 10px;
 }
 
 .container-wrapper.show {
@@ -131,6 +134,7 @@ body {
   user-select: none;
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
+  flex-shrink: 0;
 }
 
 .content-box:hover {
@@ -153,6 +157,7 @@ body {
   font-weight: 700;
   margin-bottom: 5px;
   user-select: none;
+  text-transform: lowercase;
 }
 
 .role {
@@ -206,7 +211,6 @@ body {
   display: block;
 }
 
-/* New styles for discord and telegram clickable texts */
 
 #extra-subtitles {
   margin-top: 20px;
@@ -236,4 +240,37 @@ body {
 
 #extra-subtitles a.extra-text:hover {
   color: white;
+}
+
+
+@keyframes colorCycleGlow {
+  0%   { color: red; text-shadow: 0 0 8px red, 0 0 20px red; }
+  16.6% { color: yellow; text-shadow: 0 0 8px yellow, 0 0 20px yellow; }
+  33.3% { color: limegreen; text-shadow: 0 0 8px limegreen, 0 0 20px limegreen; }
+  50%  { color: cyan; text-shadow: 0 0 8px cyan, 0 0 20px cyan; }
+  66.6% { color: blue; text-shadow: 0 0 8px blue, 0 0 20px blue; }
+  83.3% { color: magenta; text-shadow: 0 0 8px magenta, 0 0 20px magenta; }
+  100% { color: red; text-shadow: 0 0 8px red, 0 0 20px red; }
+}
+
+
+.name.mach9ne-glow {
+  animation: colorCycleGlow 12s linear infinite;
+  user-select: none;
+}
+
+
+@keyframes colorCycleSmooth {
+  0%   { color: red; }
+  16.6% { color: yellow; }
+  33.3% { color: limegreen; }
+  50%  { color: cyan; }
+  66.6% { color: blue; }
+  83.3% { color: magenta; }
+  100% { color: red; }
+}
+
+.color-cycle {
+  animation: colorCycleSmooth 12s linear infinite;
+  user-select: none;
 }
