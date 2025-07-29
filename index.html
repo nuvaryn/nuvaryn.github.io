@@ -1,20 +1,116 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>nuvaryn</title>
-  <link rel="icon" type="image/png" href="favicon.png" />
-  <link href="https://fonts.googleapis.com/css2?family=Jersey+10&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="style.css" />
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>nuvaryn | coming soon</title>
+<link rel="icon" type="image/png" href="favicon.png" />
+<link href="https://fonts.googleapis.com/css2?family=Jersey+10&display=swap" rel="stylesheet" />
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Jersey+10&display=swap');
+
+  html, body {
+    margin: 0;
+    height: 100vh;
+    width: 100vw;
+    background-color: #000;
+    color: white;
+    font-family: 'Jersey 10', sans-serif;
+    overflow: hidden;
+    user-select: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    touch-action: none;
+  }
+
+  #loader, #click-screen {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: #000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+    user-select: none;
+  }
+
+  #loader {
+    color: gray;
+    font-size: 2rem;
+  }
+
+  .dots::after {
+    content: '';
+    display: inline-block;
+    width: 0.5em;
+    animation: dots 1s steps(3, end) infinite;
+  }
+
+  @keyframes dots {
+    0% { content: ''; }
+    33% { content: '.'; }
+    66% { content: '..'; }
+    100% { content: '...'; }
+  }
+
+  #click-screen {
+    color: white;
+    font-size: 2rem;
+    cursor: pointer;
+    display: none;
+  }
+
+  #main-content {
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    user-select: none !important;
+    pointer-events: auto;
+    touch-action: none !important;
+    z-index: 10;
+  }
+
+  #main-content img {
+    max-width: 300px;
+    max-height: 300px;
+    user-select: none !important;
+    -webkit-user-drag: none !important;
+    user-drag: none !important;
+    pointer-events: none !important;
+    display: block;
+    touch-action: none !important;
+    draggable: false;
+  }
+
+  body.disable-interaction, 
+  body.disable-interaction * {
+    user-select: none !important;
+    -webkit-user-select: none !important;
+    -moz-user-select: none !important;
+    -ms-user-select: none !important;
+    pointer-events: none !important;
+    -webkit-user-drag: none !important;
+    user-drag: none !important;
+    touch-action: none !important;
+  }
+
+  body.disable-interaction #main-content {
+    pointer-events: auto !important;
+  }
+</style>
 </head>
 <body>
   <div id="loader">
-    <p>Loading<span class="dots">...</span></p>
+    <p><span class="dots">.</span></p>
   </div>
 
   <div id="click-screen">
-    <p>Click anywhere</p>
+    <p>new void</p>
   </div>
 
   <audio id="bg-music" src="music.mp3" loop></audio>
@@ -22,87 +118,50 @@
   <canvas id="snow-canvas"></canvas>
 
   <main id="main-content">
-    <h1 id="title">nuvaryn</h1>
-    <h2 id="subtitle">"new void"</h2>
-
-    <div class="container-wrapper">
-
-      <div class="content-box">
-        <img src="pfp4.png" alt="viper" class="pfp" />
-        <h3 class="name color-cycle">viper</h3>
-        <p class="role">Coordinator</p>
-        <div class="quote-section">
-          <hr class="quote-line" />
-          <p class="quote">❝ Swaying to the symphony of destruction. ❞</p>
-          <hr class="quote-line" />
-        </div>
-        <div class="social-buttons">
-          <a href="https://breachforums.info/User-ssa8nt" target="_blank" rel="noopener" aria-label="Telegram">
-            <img src="telegram.png" alt="Telegram" />
-          </a>
-        </div>
-      </div>
-
-
-      <div class="content-box">
-        <img src="pfp2.png" alt="anastasia" class="pfp" />
-        <h3 class="name mach9ne-glow">anastasia</h3>
-        <p class="role">Broker</p>
-        <div class="quote-section">
-          <hr class="quote-line" />
-          <p class="quote">❝ True conquest knoweth no clamour nor boast. ❞</p>
-          <hr class="quote-line" />
-        </div>
-        <div class="social-buttons">
-          <a href="https://breachforums.info/User-Anastasia" target="_blank" rel="noopener" aria-label="Telegram">
-            <img src="telegram.png" alt="Telegram" />
-          </a>
-        </div>
-      </div>
-
-
-      <div class="content-box">
-        <img src="pfp1.png" alt="mach9ne" class="pfp" />
-        <h3 class="name mach9ne-glow">mach9ne</h3>
-        <p class="role">Operator</p>
-        <div class="quote-section">
-          <hr class="quote-line" />
-          <p class="quote">❝ Let not thy tongue betray the craft of thine intent. ❞</p>
-          <hr class="quote-line" />
-        </div>
-        <div class="social-buttons">
-          <a href="https://breachforums.info/User-mach9ne" target="_blank" rel="noopener" aria-label="Telegram">
-            <img src="telegram.png" alt="Telegram" />
-          </a>
-          <a href="https://t.me/mach9ne" target="_blank" rel="noopener" aria-label="Doxbin">
-            <img src="doxbin.png" alt="Doxbin" />
-          </a>
-        </div>
-      </div>
-
-      <div class="content-box">
-        <img src="pfp3.png" alt="EternalSynergy" class="pfp" />
-        <h3 class="name color-cycle">EternalSynergy</h3>
-        <p class="role">Sentinel</p>
-        <div class="quote-section">
-          <hr class="quote-line" />
-          <p class="quote">❝ In silence, we orchestrate fate. yo Holy SHit.❞</p>
-          <hr class="quote-line" />
-        </div>
-        <div class="social-buttons">
-          <a href="https://breachforums.info/" target="_blank" rel="noopener" aria-label="Telegram">
-            <img src="telegram.png" alt="Telegram" />
-          </a>
-        </div>
-      </div>
-    </div>
-
-    <div id="extra-subtitles">
-      <a href="https://discord.gg/nuvaryn" target="_blank" rel="noopener" class="extra-text">discord</a>
-      <a href="https://t.me/nuvxryn" target="_blank" rel="noopener" class="extra-text">telegram</a>
-    </div>
+    <img src="logo.png" alt="Logo" draggable="false" />
   </main>
 
-  <script src="script.js"></script>
+  <script>
+    window.addEventListener('load', () => {
+      const loader = document.getElementById('loader');
+      const clickScreen = document.getElementById('click-screen');
+      const music = document.getElementById('bg-music');
+      const main = document.getElementById('main-content');
+
+      setTimeout(() => {
+        loader.style.display = 'none';
+        clickScreen.style.display = 'flex';
+      }, 500);
+
+      clickScreen.addEventListener('click', () => {
+        clickScreen.style.display = 'none';
+        main.style.display = 'block';
+        music.play().catch(() => console.warn("Autoplay blocked"));
+
+        document.body.classList.add('disable-interaction');
+        main.style.pointerEvents = 'auto';
+      });
+    });
+
+    document.addEventListener('DOMContentLoaded', () => {
+      const logo = document.querySelector('#main-content img');
+      if (logo) {
+        logo.addEventListener('dragstart', e => e.preventDefault());
+        logo.addEventListener('selectstart', e => e.preventDefault());
+      }
+    });
+
+    document.addEventListener('copy', e => {
+      if(document.body.classList.contains('disable-interaction')) e.preventDefault();
+    });
+
+    document.addEventListener('paste', e => {
+      if(document.body.classList.contains('disable-interaction')) e.preventDefault();
+    });
+
+    document.addEventListener('contextmenu', e => {
+      if(document.body.classList.contains('disable-interaction')) e.preventDefault();
+    });
+  </script>
 </body>
 </html>
