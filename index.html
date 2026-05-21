@@ -1,99 +1,700 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>nuvaryn</title>
-  <link rel="icon" type="image/png" href="favicon.png" />
-  <link href="https://fonts.googleapis.com/css2?family=Jersey+10&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="style.css" />
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Nuvaryn — Premium Web Design</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Syncopate:wght@400;700&family=Josefin+Sans:wght@100;200;300;400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --gold: #C9A84C;
+    --gold-light: #E8C96B;
+    --gold-pale: #F0DFA0;
+    --gold-dim: #7A6228;
+    --dark: #060608;
+    --dark2: #0D0D12;
+    --dark3: #13131A;
+    --dark4: #1A1A24;
+    --glass: rgba(255,255,255,0.03);
+    --glass-border: rgba(201,168,76,0.15);
+    --text: #E8E0CC;
+    --text-dim: #7A7060;
+  }
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body { background: var(--dark); color: var(--text); font-family: 'Josefin Sans', sans-serif; font-weight: 200; overflow-x: hidden; cursor: none; }
+  #cursor { position: fixed; width: 8px; height: 8px; background: var(--gold); border-radius: 50%; pointer-events: none; z-index: 9999; transform: translate(-50%, -50%); transition: transform 0.1s, width 0.3s, height 0.3s, opacity 0.3s; }
+  #cursor-ring { position: fixed; width: 36px; height: 36px; border: 1px solid rgba(201,168,76,0.5); border-radius: 50%; pointer-events: none; z-index: 9998; transform: translate(-50%, -50%); transition: transform 0.15s ease-out, width 0.3s, height 0.3s, border-color 0.3s; }
+  body::before { content: ''; position: fixed; inset: 0; background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='1'/%3E%3C/svg%3E"); opacity: 0.025; pointer-events: none; z-index: 1000; }
+  #bg-canvas { position: fixed; inset: 0; z-index: 0; opacity: 0.4; }
+  .orb { position: fixed; border-radius: 50%; filter: blur(80px); pointer-events: none; z-index: 0; animation: orbFloat linear infinite; }
+  .orb1 { width: 500px; height: 500px; background: radial-gradient(circle, rgba(201,168,76,0.12), transparent 70%); top: -100px; right: -100px; animation-duration: 20s; }
+  .orb2 { width: 400px; height: 400px; background: radial-gradient(circle, rgba(201,168,76,0.08), transparent 70%); bottom: 10%; left: -150px; animation-duration: 25s; animation-delay: -10s; }
+  .orb3 { width: 300px; height: 300px; background: radial-gradient(circle, rgba(201,168,76,0.06), transparent 70%); top: 40%; left: 40%; animation-duration: 30s; animation-delay: -5s; }
+  @keyframes orbFloat { 0%, 100% { transform: translateY(0) scale(1); } 33% { transform: translateY(-40px) scale(1.05); } 66% { transform: translateY(20px) scale(0.95); } }
+  nav { position: fixed; top: 0; left: 0; right: 0; z-index: 500; display: flex; justify-content: space-between; align-items: center; padding: 24px 60px; background: linear-gradient(to bottom, rgba(6,6,8,0.9), transparent); backdrop-filter: blur(10px); animation: fadeDown 1s ease forwards; }
+  @keyframes fadeDown { from { opacity: 0; transform: translateY(-20px); } to { opacity: 1; transform: translateY(0); } }
+  .nav-logo { font-family: 'Syncopate', sans-serif; font-size: 1.1rem; letter-spacing: 0.3em; color: var(--gold); text-decoration: none; position: relative; }
+  .nav-logo::after { content: ''; position: absolute; bottom: -4px; left: 0; width: 0; height: 1px; background: var(--gold); transition: width 0.4s ease; }
+  .nav-logo:hover::after { width: 100%; }
+  .nav-links { display: flex; gap: 40px; list-style: none; }
+  .nav-links a { color: var(--text-dim); text-decoration: none; font-size: 0.7rem; letter-spacing: 0.2em; text-transform: uppercase; transition: color 0.3s; position: relative; }
+  .nav-links a::after { content: ''; position: absolute; bottom: -3px; left: 0; width: 0; height: 1px; background: var(--gold); transition: width 0.3s ease; }
+  .nav-links a:hover { color: var(--gold); }
+  .nav-links a:hover::after { width: 100%; }
+  .nav-cta { border: 1px solid var(--gold-dim); padding: 10px 24px; color: var(--gold); text-decoration: none; font-size: 0.65rem; letter-spacing: 0.2em; text-transform: uppercase; transition: all 0.3s; position: relative; overflow: hidden; }
+  .nav-cta::before { content: ''; position: absolute; inset: 0; background: var(--gold); transform: translateX(-100%); transition: transform 0.3s ease; }
+  .nav-cta:hover { color: var(--dark); }
+  .nav-cta:hover::before { transform: translateX(0); }
+  .nav-cta span { position: relative; z-index: 1; }
+  #hero { position: relative; z-index: 10; min-height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; padding: 120px 40px 80px; overflow: hidden; }
+  .hero-eyebrow { font-size: 0.65rem; letter-spacing: 0.5em; text-transform: uppercase; color: var(--gold); margin-bottom: 32px; opacity: 0; animation: fadeUp 1s ease 0.5s forwards; display: flex; align-items: center; gap: 16px; }
+  .hero-eyebrow::before, .hero-eyebrow::after { content: ''; width: 40px; height: 1px; background: var(--gold-dim); }
+  .hero-title { font-family: 'Cormorant Garamond', serif; font-size: clamp(4rem, 10vw, 9rem); font-weight: 300; line-height: 0.9; letter-spacing: -0.02em; margin-bottom: 40px; opacity: 0; animation: fadeUp 1.2s ease 0.7s forwards; }
+  .hero-title .gold { color: var(--gold); font-style: italic; }
+  .hero-title .outline { -webkit-text-stroke: 1px rgba(201,168,76,0.4); color: transparent; }
+  .hero-sub { font-size: 0.8rem; letter-spacing: 0.25em; text-transform: uppercase; color: var(--text-dim); max-width: 400px; line-height: 2; opacity: 0; animation: fadeUp 1s ease 0.9s forwards; margin-bottom: 60px; }
+  .hero-btns { display: flex; gap: 20px; align-items: center; opacity: 0; animation: fadeUp 1s ease 1.1s forwards; }
+  .btn-primary { position: relative; overflow: hidden; background: linear-gradient(135deg, var(--gold), var(--gold-dim)); color: var(--dark); padding: 16px 44px; font-family: 'Josefin Sans', sans-serif; font-size: 0.7rem; letter-spacing: 0.25em; text-transform: uppercase; text-decoration: none; font-weight: 400; transition: transform 0.3s, box-shadow 0.3s; box-shadow: 0 0 30px rgba(201,168,76,0.3); }
+  .btn-primary::before { content: ''; position: absolute; inset: 0; background: linear-gradient(135deg, var(--gold-light), var(--gold)); opacity: 0; transition: opacity 0.3s; }
+  .btn-primary:hover { transform: translateY(-3px); box-shadow: 0 10px 40px rgba(201,168,76,0.4); }
+  .btn-primary:hover::before { opacity: 1; }
+  .btn-primary span { position: relative; z-index: 1; }
+  .btn-ghost { color: var(--text-dim); font-size: 0.7rem; letter-spacing: 0.25em; text-transform: uppercase; text-decoration: none; display: flex; align-items: center; gap: 10px; transition: color 0.3s; }
+  .btn-ghost:hover { color: var(--gold); }
+  .btn-ghost .arrow { width: 30px; height: 1px; background: currentColor; position: relative; transition: width 0.3s; }
+  .btn-ghost .arrow::after { content: ''; position: absolute; right: 0; top: -3px; width: 6px; height: 6px; border-right: 1px solid currentColor; border-top: 1px solid currentColor; transform: rotate(45deg); }
+  .btn-ghost:hover .arrow { width: 50px; }
+  .scroll-hint { position: absolute; bottom: 40px; left: 50%; transform: translateX(-50%); display: flex; flex-direction: column; align-items: center; gap: 8px; opacity: 0; animation: fadeIn 1s ease 2s forwards; }
+  .scroll-hint span { font-size: 0.55rem; letter-spacing: 0.4em; color: var(--text-dim); text-transform: uppercase; }
+  .scroll-line { width: 1px; height: 60px; background: linear-gradient(to bottom, var(--gold), transparent); animation: scrollPulse 2s ease infinite; }
+  @keyframes scrollPulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.3; } }
+  @keyframes fadeUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
+  @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+  .marquee-wrap { position: relative; z-index: 10; border-top: 1px solid var(--glass-border); border-bottom: 1px solid var(--glass-border); overflow: hidden; padding: 18px 0; background: rgba(201,168,76,0.03); }
+  .marquee-track { display: flex; gap: 0; white-space: nowrap; animation: marquee 20s linear infinite; }
+  .marquee-item { display: inline-flex; align-items: center; gap: 20px; font-size: 0.65rem; letter-spacing: 0.35em; text-transform: uppercase; color: var(--text-dim); padding: 0 40px; }
+  .marquee-item .dot { width: 4px; height: 4px; background: var(--gold); border-radius: 50%; }
+  @keyframes marquee { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+  section { position: relative; z-index: 10; }
+  .section-label { font-size: 0.6rem; letter-spacing: 0.5em; text-transform: uppercase; color: var(--gold); margin-bottom: 16px; display: flex; align-items: center; gap: 12px; }
+  .section-label::before { content: ''; width: 24px; height: 1px; background: var(--gold); }
+  #stats { padding: 120px 60px; display: grid; grid-template-columns: repeat(4, 1fr); gap: 2px; }
+  .stat-card { background: var(--glass); border: 1px solid var(--glass-border); padding: 60px 40px; position: relative; overflow: hidden; transition: background 0.4s, border-color 0.4s; }
+  .stat-card::before { content: ''; position: absolute; inset: 0; background: linear-gradient(135deg, rgba(201,168,76,0.05), transparent); opacity: 0; transition: opacity 0.4s; }
+  .stat-card:hover { background: rgba(201,168,76,0.04); border-color: rgba(201,168,76,0.3); }
+  .stat-card:hover::before { opacity: 1; }
+  .stat-num { font-family: 'Cormorant Garamond', serif; font-size: 4.5rem; font-weight: 300; color: var(--gold); line-height: 1; margin-bottom: 12px; display: flex; align-items: flex-start; }
+  .stat-num sup { font-size: 1.5rem; margin-top: 8px; }
+  .stat-label { font-size: 0.65rem; letter-spacing: 0.3em; color: var(--text-dim); text-transform: uppercase; }
+  .stat-desc { font-size: 0.75rem; color: var(--text-dim); margin-top: 8px; line-height: 1.6; }
+  #services { padding: 120px 60px; }
+  .services-header { display: grid; grid-template-columns: 1fr 1fr; gap: 80px; margin-bottom: 80px; }
+  .services-title { font-family: 'Cormorant Garamond', serif; font-size: clamp(2.5rem, 5vw, 4rem); font-weight: 300; line-height: 1.1; }
+  .services-title em { color: var(--gold); font-style: italic; }
+  .services-desc { font-size: 0.8rem; color: var(--text-dim); line-height: 2; display: flex; flex-direction: column; justify-content: flex-end; padding-bottom: 8px; }
+  .services-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2px; }
+  .service-card { background: var(--glass); border: 1px solid var(--glass-border); padding: 50px 40px; position: relative; overflow: hidden; transition: all 0.5s; cursor: default; }
+  .service-card::after { content: ''; position: absolute; bottom: 0; left: 0; width: 0; height: 2px; background: linear-gradient(to right, var(--gold), transparent); transition: width 0.5s ease; }
+  .service-card:hover { background: rgba(201,168,76,0.04); border-color: rgba(201,168,76,0.25); transform: translateY(-4px); }
+  .service-card:hover::after { width: 100%; }
+  .service-num { font-family: 'Cormorant Garamond', serif; font-size: 0.9rem; color: var(--gold-dim); margin-bottom: 30px; letter-spacing: 0.1em; }
+  .service-icon { width: 48px; height: 48px; margin-bottom: 24px; }
+  .service-name { font-family: 'Syncopate', sans-serif; font-size: 0.75rem; letter-spacing: 0.15em; color: var(--text); margin-bottom: 16px; }
+  .service-text { font-size: 0.75rem; color: var(--text-dim); line-height: 1.8; }
+  #process { padding: 120px 60px; background: linear-gradient(180deg, transparent, rgba(201,168,76,0.02), transparent); }
+  .process-title { font-family: 'Cormorant Garamond', serif; font-size: clamp(2.5rem, 5vw, 4rem); font-weight: 300; text-align: center; margin-bottom: 80px; }
+  .process-title em { color: var(--gold); font-style: italic; }
+  .process-steps { display: grid; grid-template-columns: repeat(4, 1fr); position: relative; }
+  .process-steps::before { content: ''; position: absolute; top: 40px; left: 10%; right: 10%; height: 1px; background: linear-gradient(to right, transparent, var(--gold-dim), transparent); }
+  .process-step { padding: 0 30px; text-align: center; opacity: 0; transform: translateY(20px); transition: opacity 0.6s ease, transform 0.6s ease; }
+  .process-step.visible { opacity: 1; transform: translateY(0); }
+  .step-num { width: 80px; height: 80px; border: 1px solid var(--gold-dim); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 30px; font-family: 'Cormorant Garamond', serif; font-size: 1.8rem; color: var(--gold); position: relative; background: var(--dark); transition: all 0.4s; }
+  .process-step:hover .step-num { border-color: var(--gold); box-shadow: 0 0 30px rgba(201,168,76,0.3); background: rgba(201,168,76,0.05); }
+  .step-title { font-family: 'Syncopate', sans-serif; font-size: 0.65rem; letter-spacing: 0.2em; color: var(--gold); margin-bottom: 12px; }
+  .step-text { font-size: 0.75rem; color: var(--text-dim); line-height: 1.8; }
+  #pricing { padding: 120px 60px; }
+  .pricing-header { text-align: center; margin-bottom: 80px; }
+  .pricing-title { font-family: 'Cormorant Garamond', serif; font-size: clamp(2.5rem, 5vw, 4rem); font-weight: 300; margin-bottom: 16px; }
+  .pricing-title em { color: var(--gold); font-style: italic; }
+  .pricing-sub { font-size: 0.75rem; color: var(--text-dim); letter-spacing: 0.15em; }
+  .pricing-cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2px; }
+  .pricing-card { background: var(--glass); border: 1px solid var(--glass-border); padding: 60px 40px; position: relative; overflow: hidden; transition: all 0.5s; }
+  .pricing-card.featured { background: rgba(201,168,76,0.05); border-color: rgba(201,168,76,0.3); }
+  .pricing-card.featured::before { content: 'POPULAR'; position: absolute; top: 24px; right: 24px; font-size: 0.55rem; letter-spacing: 0.3em; color: var(--dark); background: var(--gold); padding: 4px 12px; }
+  .pricing-card:hover { transform: translateY(-6px); border-color: rgba(201,168,76,0.3); }
+  .price-tier { font-size: 0.6rem; letter-spacing: 0.4em; color: var(--gold); text-transform: uppercase; margin-bottom: 20px; }
+  .price-amount { font-family: 'Cormorant Garamond', serif; font-size: 3.5rem; font-weight: 300; color: var(--text); margin-bottom: 8px; display: flex; align-items: flex-start; }
+  .price-amount .currency { font-size: 1.5rem; margin-top: 8px; color: var(--gold); }
+  .price-note { font-size: 0.65rem; color: var(--text-dim); margin-bottom: 40px; letter-spacing: 0.1em; }
+  .price-features { list-style: none; margin-bottom: 50px; }
+  .price-features li { font-size: 0.75rem; color: var(--text-dim); padding: 12px 0; border-bottom: 1px solid rgba(255,255,255,0.04); display: flex; align-items: center; gap: 12px; line-height: 1.5; }
+  .price-features li::before { content: ''; width: 16px; height: 1px; background: var(--gold); flex-shrink: 0; }
+  .price-cta { display: block; text-align: center; padding: 14px; border: 1px solid var(--gold-dim); color: var(--gold); font-size: 0.65rem; letter-spacing: 0.3em; text-transform: uppercase; text-decoration: none; transition: all 0.3s; position: relative; overflow: hidden; }
+  .price-cta::before { content: ''; position: absolute; inset: 0; background: var(--gold); transform: scaleX(0); transform-origin: left; transition: transform 0.3s ease; }
+  .price-cta:hover { color: var(--dark); }
+  .price-cta:hover::before { transform: scaleX(1); }
+  .price-cta span { position: relative; z-index: 1; }
+  .pricing-card.featured .price-cta { background: var(--gold); color: var(--dark); border-color: var(--gold); }
+  .pricing-card.featured .price-cta::before { background: var(--gold-light); }
+  #features-bar { padding: 80px 60px; display: grid; grid-template-columns: repeat(3, 1fr); border-top: 1px solid var(--glass-border); border-bottom: 1px solid var(--glass-border); background: rgba(201,168,76,0.02); }
+  .feature-item { padding: 40px; border-right: 1px solid var(--glass-border); display: flex; gap: 24px; align-items: flex-start; transition: background 0.3s; }
+  .feature-item:last-child { border-right: none; }
+  .feature-item:hover { background: rgba(201,168,76,0.03); }
+  .feature-icon-wrap { width: 48px; height: 48px; flex-shrink: 0; border: 1px solid var(--gold-dim); display: flex; align-items: center; justify-content: center; color: var(--gold); }
+  .feature-title { font-family: 'Syncopate', sans-serif; font-size: 0.65rem; letter-spacing: 0.15em; color: var(--text); margin-bottom: 8px; }
+  .feature-text { font-size: 0.72rem; color: var(--text-dim); line-height: 1.8; }
+  #chart-section { padding: 120px 60px; }
+  .chart-header { display: grid; grid-template-columns: 1fr 1fr; gap: 80px; margin-bottom: 60px; align-items: end; }
+  .chart-title { font-family: 'Cormorant Garamond', serif; font-size: clamp(2rem, 4vw, 3.5rem); font-weight: 300; line-height: 1.1; }
+  .chart-title em { color: var(--gold); font-style: italic; }
+  .chart-desc { font-size: 0.75rem; color: var(--text-dim); line-height: 2; }
+  .charts-container { display: grid; grid-template-columns: 1fr 1fr; gap: 2px; }
+  .chart-box { background: var(--glass); border: 1px solid var(--glass-border); padding: 50px 40px; }
+  .chart-box-title { font-size: 0.6rem; letter-spacing: 0.35em; color: var(--text-dim); text-transform: uppercase; margin-bottom: 40px; }
+  .bar-chart { display: flex; align-items: flex-end; gap: 16px; height: 200px; }
+  .bar-group { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 12px; height: 100%; justify-content: flex-end; }
+  .bar { width: 100%; border-radius: 2px 2px 0 0; background: linear-gradient(to top, var(--gold-dim), var(--gold)); transform-origin: bottom; transform: scaleY(0); transition: transform 1s cubic-bezier(0.34, 1.56, 0.64, 1); }
+  .bar.animate { transform: scaleY(1); }
+  .bar-label { font-size: 0.6rem; color: var(--text-dim); letter-spacing: 0.1em; white-space: nowrap; text-align: center; }
+  .donut-wrap { display: flex; align-items: center; gap: 40px; }
+  .donut-legend { display: flex; flex-direction: column; gap: 16px; }
+  .legend-item { display: flex; align-items: center; gap: 12px; }
+  .legend-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+  .legend-text { font-size: 0.7rem; color: var(--text-dim); }
+  .legend-pct { font-family: 'Cormorant Garamond', serif; font-size: 1rem; color: var(--gold); margin-left: auto; }
+  .speed-meter { display: flex; flex-direction: column; align-items: center; gap: 20px; }
+  .gauge-label { text-align: center; }
+  .gauge-value { font-family: 'Cormorant Garamond', serif; font-size: 2.5rem; color: var(--gold); }
+  .gauge-sub { font-size: 0.6rem; color: var(--text-dim); letter-spacing: 0.2em; text-transform: uppercase; }
+  #contact { padding: 140px 60px; display: flex; flex-direction: column; align-items: center; text-align: center; position: relative; overflow: hidden; }
+  #contact::before { content: ''; position: absolute; inset: 0; background: radial-gradient(ellipse 60% 40% at 50% 50%, rgba(201,168,76,0.06), transparent); }
+  .contact-eyebrow { font-size: 0.6rem; letter-spacing: 0.5em; color: var(--gold); text-transform: uppercase; margin-bottom: 30px; display: flex; align-items: center; gap: 16px; }
+  .contact-eyebrow::before, .contact-eyebrow::after { content: ''; width: 60px; height: 1px; background: var(--gold-dim); }
+  .contact-title { font-family: 'Cormorant Garamond', serif; font-size: clamp(3rem, 8vw, 7rem); font-weight: 300; line-height: 0.95; margin-bottom: 30px; }
+  .contact-title em { color: var(--gold); font-style: italic; display: block; }
+  .contact-sub { font-size: 0.8rem; color: var(--text-dim); letter-spacing: 0.2em; margin-bottom: 60px; line-height: 2; }
+  .contact-card { display: inline-flex; align-items: center; gap: 24px; border: 1px solid var(--glass-border); padding: 30px 50px; background: rgba(201,168,76,0.03); transition: all 0.4s; text-decoration: none; position: relative; overflow: hidden; margin-bottom: 60px; }
+  .contact-card::before { content: ''; position: absolute; inset: 0; background: rgba(201,168,76,0.06); transform: scaleX(0); transform-origin: left; transition: transform 0.4s ease; }
+  .contact-card:hover { border-color: rgba(201,168,76,0.4); }
+  .contact-card:hover::before { transform: scaleX(1); }
+  .contact-icon { color: var(--gold); position: relative; z-index: 1; }
+  .contact-details { position: relative; z-index: 1; text-align: left; }
+  .contact-via { font-size: 0.55rem; letter-spacing: 0.4em; color: var(--text-dim); text-transform: uppercase; margin-bottom: 4px; }
+  .contact-handle { font-family: 'Syncopate', sans-serif; font-size: 0.85rem; color: var(--gold); letter-spacing: 0.1em; }
+  .contact-promise { display: flex; gap: 60px; justify-content: center; position: relative; z-index: 1; }
+  .promise-item { text-align: center; }
+  .promise-num { font-family: 'Cormorant Garamond', serif; font-size: 2.5rem; color: var(--gold); display: block; }
+  .promise-text { font-size: 0.65rem; letter-spacing: 0.2em; color: var(--text-dim); text-transform: uppercase; }
+  footer { border-top: 1px solid var(--glass-border); padding: 40px 60px; display: flex; justify-content: space-between; align-items: center; position: relative; z-index: 10; }
+  .footer-logo { font-family: 'Syncopate', sans-serif; font-size: 0.9rem; letter-spacing: 0.3em; color: var(--gold); }
+  .footer-copy { font-size: 0.6rem; letter-spacing: 0.2em; color: var(--text-dim); text-transform: uppercase; }
+  .footer-tagline { font-size: 0.6rem; letter-spacing: 0.15em; color: var(--text-dim); font-style: italic; font-family: 'Cormorant Garamond', serif; }
+  .reveal { opacity: 0; transform: translateY(40px); transition: opacity 0.8s ease, transform 0.8s ease; }
+  .reveal.visible { opacity: 1; transform: translateY(0); }
+  .reveal-delay-1 { transition-delay: 0.1s; }
+  .reveal-delay-2 { transition-delay: 0.2s; }
+  .reveal-delay-3 { transition-delay: 0.3s; }
+  .reveal-delay-4 { transition-delay: 0.4s; }
+  .deco-line { width: 100%; height: 1px; background: linear-gradient(to right, transparent, var(--gold-dim), transparent); }
+  .counter { display: inline-block; }
+  @keyframes shimmer { 0% { background-position: -200% center; } 100% { background-position: 200% center; } }
+  .shimmer-text { background: linear-gradient(90deg, var(--gold-dim) 0%, var(--gold-light) 50%, var(--gold-dim) 100%); background-size: 200% auto; -webkit-background-clip: text; -webkit-text-fill-color: transparent; animation: shimmer 4s linear infinite; }
+  @media (max-width: 900px) {
+    nav { padding: 20px 24px; }
+    .nav-links { display: none; }
+    #stats { grid-template-columns: 1fr 1fr; padding: 60px 24px; }
+    #services { padding: 80px 24px; }
+    .services-header, .services-grid { grid-template-columns: 1fr; gap: 40px; }
+    #process { padding: 80px 24px; }
+    .process-steps { grid-template-columns: 1fr 1fr; gap: 40px; }
+    .process-steps::before { display: none; }
+    #pricing { padding: 80px 24px; }
+    .pricing-cards { grid-template-columns: 1fr; gap: 20px; }
+    #features-bar { grid-template-columns: 1fr; padding: 60px 24px; }
+    .feature-item { border-right: none; border-bottom: 1px solid var(--glass-border); }
+    #chart-section { padding: 80px 24px; }
+    .chart-header, .charts-container { grid-template-columns: 1fr; gap: 40px; }
+    #contact { padding: 80px 24px; }
+    footer { flex-direction: column; gap: 20px; text-align: center; padding: 30px 24px; }
+    .contact-promise { flex-wrap: wrap; gap: 30px; }
+  }
+</style>
 </head>
 <body>
-  <div id="loader">
-    <p>Loading<span class="dots">...</span></p>
+<div id="cursor"></div>
+<div id="cursor-ring"></div>
+<canvas id="bg-canvas"></canvas>
+<div class="orb orb1"></div>
+<div class="orb orb2"></div>
+<div class="orb orb3"></div>
+
+<nav>
+  <a href="#" class="nav-logo">NUVARYN</a>
+  <ul class="nav-links">
+    <li><a href="#services">Services</a></li>
+    <li><a href="#process">Process</a></li>
+    <li><a href="#pricing">Pricing</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+  <a href="https://t.me/zxlpvx" target="_blank" class="nav-cta"><span>Start Project</span></a>
+</nav>
+
+<section id="hero">
+  <p class="hero-eyebrow">Premium Web Design Studio</p>
+  <h1 class="hero-title">
+    <span class="outline">Websites</span><br>
+    <em class="gold">Built to</em><br>
+    Impress
+  </h1>
+  <p class="hero-sub">High-end digital presence for businesses & individuals — delivered in 72 hours</p>
+  <div class="hero-btns">
+    <a href="https://t.me/zxlpvx" target="_blank" class="btn-primary"><span>Get Your Site</span></a>
+    <a href="#services" class="btn-ghost">Explore <span class="arrow"></span></a>
   </div>
-
-  <div id="click-screen">
-    <p>Click anywhere</p>
+  <div class="scroll-hint">
+    <span>Scroll</span>
+    <div class="scroll-line"></div>
   </div>
+</section>
 
-  <audio id="bg-music" src="music.mp3" loop></audio>
+<div class="marquee-wrap">
+  <div class="marquee-track">
+    <div class="marquee-item"><span class="dot"></span> 72-Hour Delivery</div>
+    <div class="marquee-item"><span class="dot"></span> Free 1-Year Hosting</div>
+    <div class="marquee-item"><span class="dot"></span> Domain Management</div>
+    <div class="marquee-item"><span class="dot"></span> Premium Design</div>
+    <div class="marquee-item"><span class="dot"></span> Affordable Rates</div>
+    <div class="marquee-item"><span class="dot"></span> Full Ownership</div>
+    <div class="marquee-item"><span class="dot"></span> 72-Hour Delivery</div>
+    <div class="marquee-item"><span class="dot"></span> Free 1-Year Hosting</div>
+    <div class="marquee-item"><span class="dot"></span> Domain Management</div>
+    <div class="marquee-item"><span class="dot"></span> Premium Design</div>
+    <div class="marquee-item"><span class="dot"></span> Affordable Rates</div>
+    <div class="marquee-item"><span class="dot"></span> Full Ownership</div>
+  </div>
+</div>
 
-  <canvas id="snow-canvas"></canvas>
+<section id="stats">
+  <div class="stat-card reveal">
+    <div class="stat-num"><span class="counter" data-target="72">0</span>h</div>
+    <div class="stat-label">Delivery Time</div>
+    <div class="stat-desc">From brief to live — faster than any agency</div>
+  </div>
+  <div class="stat-card reveal reveal-delay-1">
+    <div class="stat-num"><span class="counter" data-target="12">0</span><sup>mo</sup></div>
+    <div class="stat-label">Free Hosting</div>
+    <div class="stat-desc">Zero infrastructure costs for your first year</div>
+  </div>
+  <div class="stat-card reveal reveal-delay-2">
+    <div class="stat-num"><span class="counter" data-target="100">0</span>%</div>
+    <div class="stat-label">Custom Design</div>
+    <div class="stat-desc">No templates. Every site built from scratch</div>
+  </div>
+  <div class="stat-card reveal reveal-delay-3">
+    <div class="stat-num"><span class="counter" data-target="1">0</span><sup>yr</sup></div>
+    <div class="stat-label">Domain & Management Free</div>
+    <div class="stat-desc">We handle everything. You focus on business</div>
+  </div>
+</section>
 
-  <main id="main-content">
-    <h1 id="title">nuvaryn</h1>
-    <h2 id="subtitle">"new void"</h2>
+<div class="deco-line"></div>
 
-    <div class="container-wrapper">
+<section id="features-bar">
+  <div class="feature-item reveal">
+    <div class="feature-icon-wrap">
+      <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+    </div>
+    <div class="feature-content">
+      <div class="feature-title">Lightning Fast</div>
+      <div class="feature-text">Optimized for Core Web Vitals. Your site loads in under 2 seconds, every time.</div>
+    </div>
+  </div>
+  <div class="feature-item reveal reveal-delay-1">
+    <div class="feature-icon-wrap">
+      <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg>
+    </div>
+    <div class="feature-content">
+      <div class="feature-title">Fully Responsive</div>
+      <div class="feature-text">Pixel-perfect on every screen. Mobile, tablet, desktop — all flawless.</div>
+    </div>
+  </div>
+  <div class="feature-item reveal reveal-delay-2">
+    <div class="feature-icon-wrap">
+      <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 8v4l3 3"/></svg>
+    </div>
+    <div class="feature-content">
+      <div class="feature-title">72h Guaranteed</div>
+      <div class="feature-text">We commit to your deadline. Professional results without the wait.</div>
+    </div>
+  </div>
+</section>
 
-      <div class="content-box">
-        <img src="pfp4.png" alt="viper" class="pfp" />
-        <h3 class="name color-cycle">viper</h3>
-        <p class="role">Coordinator</p>
-        <div class="quote-section">
-          <hr class="quote-line" />
-          <p class="quote">❝ Swaying to the symphony of destruction. ❞</p>
-          <hr class="quote-line" />
+<section id="services">
+  <div class="services-header reveal">
+    <div>
+      <p class="section-label">What We Build</p>
+      <h2 class="services-title">Everything your <em>brand needs</em> online</h2>
+    </div>
+    <div class="services-desc">We craft digital experiences that convert visitors into customers. Every pixel serves a purpose — every interaction leaves an impression.</div>
+  </div>
+  <div class="services-grid">
+    <div class="service-card reveal">
+      <div class="service-num">01</div>
+      <svg class="service-icon" fill="none" stroke="#C9A84C" stroke-width="1.2" viewBox="0 0 48 48"><rect x="4" y="8" width="40" height="32" rx="2"/><path d="M4 16h40M14 8v8M24 8v8M34 8v8"/></svg>
+      <div class="service-name">Business Websites</div>
+      <div class="service-text">Professional, conversion-focused sites that establish authority and drive enquiries. Built for your industry.</div>
+    </div>
+    <div class="service-card reveal reveal-delay-1">
+      <div class="service-num">02</div>
+      <svg class="service-icon" fill="none" stroke="#C9A84C" stroke-width="1.2" viewBox="0 0 48 48"><circle cx="24" cy="20" r="12"/><path d="M8 42c0-8.8 7.2-16 16-16s16 7.2 16 16"/></svg>
+      <div class="service-name">Portfolio Sites</div>
+      <div class="service-text">Showcase your work with elegance. For creatives, professionals, and personal brands who demand distinction.</div>
+    </div>
+    <div class="service-card reveal reveal-delay-2">
+      <div class="service-num">03</div>
+      <svg class="service-icon" fill="none" stroke="#C9A84C" stroke-width="1.2" viewBox="0 0 48 48"><path d="M8 36l8-12 8 8 8-16 8 20"/><rect x="4" y="4" width="40" height="40" rx="2"/></svg>
+      <div class="service-name">Landing Pages</div>
+      <div class="service-text">High-converting single pages that capture leads and sell. Designed around your offer and your audience.</div>
+    </div>
+    <div class="service-card reveal reveal-delay-1">
+      <div class="service-num">04</div>
+      <svg class="service-icon" fill="none" stroke="#C9A84C" stroke-width="1.2" viewBox="0 0 48 48"><rect x="8" y="8" width="32" height="32" rx="2"/><path d="M8 18h32M18 8v10M30 8v10"/></svg>
+      <div class="service-name">E-Commerce</div>
+      <div class="service-text">Beautiful online stores with seamless checkout. From product pages to payment — we handle the full build.</div>
+    </div>
+    <div class="service-card reveal reveal-delay-2">
+      <div class="service-num">05</div>
+      <svg class="service-icon" fill="none" stroke="#C9A84C" stroke-width="1.2" viewBox="0 0 48 48"><rect x="6" y="28" width="36" height="14" rx="2"/><rect x="6" y="6" width="36" height="16" rx="2"/><circle cx="12" cy="14" r="2"/></svg>
+      <div class="service-name">Hosting & Domain</div>
+      <div class="service-text">First year completely free. We register your domain, configure hosting, and manage everything so you don't have to.</div>
+    </div>
+    <div class="service-card reveal reveal-delay-3">
+      <div class="service-num">06</div>
+      <svg class="service-icon" fill="none" stroke="#C9A84C" stroke-width="1.2" viewBox="0 0 48 48"><path d="M24 4l18 10v20L24 44 6 34V14L24 4z"/><path d="M24 4v40M6 14l18 10 18-10"/></svg>
+      <div class="service-name">Ongoing Management</div>
+      <div class="service-text">Updates, security, backups, and performance tuning. Your site stays fast, secure, and current — always.</div>
+    </div>
+  </div>
+</section>
+
+<section id="process">
+  <p class="section-label" style="text-align:center;justify-content:center;margin-bottom:16px;">How It Works</p>
+  <h2 class="process-title">From idea to <em>live site</em> in 72 hours</h2>
+  <div class="process-steps">
+    <div class="process-step">
+      <div class="step-num">01</div>
+      <div class="step-title">Brief</div>
+      <div class="step-text">Contact us on Telegram. Tell us about your business, goals, and style preferences.</div>
+    </div>
+    <div class="process-step">
+      <div class="step-num">02</div>
+      <div class="step-title">Design</div>
+      <div class="step-text">We craft a bespoke design aligned with your brand. Review and approve within 24 hours.</div>
+    </div>
+    <div class="process-step">
+      <div class="step-num">03</div>
+      <div class="step-title">Build</div>
+      <div class="step-text">Full development, responsiveness testing, and performance optimization.</div>
+    </div>
+    <div class="process-step">
+      <div class="step-num">04</div>
+      <div class="step-title">Launch</div>
+      <div class="step-text">We deploy to your domain with free hosting active. You're live — in under 72 hours.</div>
+    </div>
+  </div>
+</section>
+
+<section id="chart-section">
+  <div class="chart-header reveal">
+    <div>
+      <p class="section-label">By The Numbers</p>
+      <h2 class="chart-title">Results that <em>speak</em> for themselves</h2>
+    </div>
+    <div class="chart-desc">A professional website is your highest-ROI marketing asset. Our clients see measurable results within weeks of launch.</div>
+  </div>
+  <div class="charts-container">
+    <div class="chart-box reveal">
+      <div class="chart-box-title">Delivery Timeline vs Industry Average</div>
+      <div class="bar-chart" id="bar-chart">
+        <div class="bar-group">
+          <div class="bar" style="height:180px"></div>
+          <div class="bar-label">Agency<br>Avg. 6wk</div>
         </div>
-        <div class="social-buttons">
+        <div class="bar-group">
+          <div class="bar" style="height:100px;background:linear-gradient(to top,#7A6228,#C9A84C80)"></div>
+          <div class="bar-label">Freelance<br>Avg. 3wk</div>
         </div>
-      </div>
-
-
-      <div class="content-box">
-        <img src="pfp2.png" alt="anastasia" class="pfp" />
-        <h3 class="name mach9ne-glow">sloppy</h3>
-        <p class="role">Broker</p>
-        <div class="quote-section">
-          <hr class="quote-line" />
-          <p class="quote">❝ I am not your enemy. I am your friend. ❞</p>
-          <hr class="quote-line" />
-        </div>
-        <div class="social-buttons">
-          <a href="https://t.me/zxlpvx" target="_blank" rel="noopener" aria-label="Telegram">
-            <img src="telegram.png" alt="Telegram" />
-          </a>
-        </div>
-      </div>
-
-
-      <div class="content-box">
-        <img src="pfp1.png" alt="mach9ne" class="pfp" />
-        <h3 class="name mach9ne-glow">mach9ne</h3>
-        <p class="role">Operator</p>
-        <div class="quote-section">
-          <hr class="quote-line" />
-          <p class="quote">❝ Let not thy tongue betray the craft of thine intent. ❞</p>
-          <hr class="quote-line" />
-        </div>
-        <div class="social-buttons">
-          <a href="https://t.me/mach9ne" target="_blank" rel="noopener" aria-label="Telegram">
-            <img src="telegram.png" alt="Telegram" />
-          </a>
-        </div>
-      </div>
-
-      <div class="content-box">
-        <img src="pfp3.png" alt="Sneaky" class="pfp" />
-        <h3 class="name color-cycle">Sneaky</h3>
-        <p class="role">Sentinel</p>
-        <div class="quote-section">
-          <hr class="quote-line" />
-          <p class="quote">❝ In silence, we orchestrate fate. yo Holy SHit.❞</p>
-          <hr class="quote-line" />
-        </div>
-        <div class="social-buttons">
+        <div class="bar-group">
+          <div class="bar" style="height:30px;background:linear-gradient(to top,var(--gold),var(--gold-light))"></div>
+          <div class="bar-label" style="color:var(--gold)">Nuvaryn<br>72 Hours</div>
         </div>
       </div>
     </div>
-
-    <div id="extra-subtitles">
-      <a href="https://discord.gg/Ahm36DvNc2" target="_blank" rel="noopener" class="extra-text">discord</a>
-      <a href="https://t.me/newvoid" target="_blank" rel="noopener" class="extra-text">telegram</a>
+    <div class="chart-box reveal reveal-delay-1">
+      <div class="chart-box-title">What's Included — Value Breakdown</div>
+      <div class="donut-wrap">
+        <canvas id="donut-canvas" width="160" height="160"></canvas>
+        <div class="donut-legend">
+          <div class="legend-item"><div class="legend-dot" style="background:#C9A84C"></div><div class="legend-text">Custom Design</div><div class="legend-pct">35%</div></div>
+          <div class="legend-item"><div class="legend-dot" style="background:#7A6228"></div><div class="legend-text">Dev & Build</div><div class="legend-pct">30%</div></div>
+          <div class="legend-item"><div class="legend-dot" style="background:#E8C96B"></div><div class="legend-text">Hosting & Domain</div><div class="legend-pct">20%</div></div>
+          <div class="legend-item"><div class="legend-dot" style="background:#3D3010"></div><div class="legend-text">Management</div><div class="legend-pct">15%</div></div>
+        </div>
+      </div>
     </div>
-  </main>
+    <div class="chart-box reveal reveal-delay-2">
+      <div class="chart-box-title">Average Traffic Growth After Launch</div>
+      <canvas id="line-canvas" width="500" height="200"></canvas>
+    </div>
+    <div class="chart-box reveal reveal-delay-3">
+      <div class="chart-box-title">Delivery Speed Rating</div>
+      <div class="speed-meter">
+        <canvas id="gauge-canvas" width="260" height="150"></canvas>
+        <div class="gauge-label">
+          <div class="gauge-value shimmer-text">72h</div>
+          <div class="gauge-sub">Guaranteed Delivery</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
 
-  <script src="script.js"></script>
+<section id="pricing">
+  <div class="pricing-header reveal">
+    <p class="section-label" style="justify-content:center">Investment</p>
+    <h2 class="pricing-title">Premium quality. <em>Honest pricing.</em></h2>
+    <p class="pricing-sub">All plans include 1 year free hosting + domain management</p>
+  </div>
+  <div class="pricing-cards">
+    <div class="pricing-card reveal">
+      <div class="price-tier">Starter</div>
+      <div class="price-amount"><span class="currency">$</span>149</div>
+      <div class="price-note">One-time payment</div>
+      <ul class="price-features">
+        <li>5-page custom website</li>
+        <li>Mobile responsive design</li>
+        <li>1 year free hosting</li>
+        <li>Domain registration free</li>
+        <li>Contact form integration</li>
+        <li>Delivered in 72 hours</li>
+      </ul>
+      <a href="https://t.me/zxlpvx" target="_blank" class="price-cta"><span>Get Started</span></a>
+    </div>
+    <div class="pricing-card featured reveal reveal-delay-1">
+      <div class="price-tier">Professional</div>
+      <div class="price-amount"><span class="currency">$</span>299</div>
+      <div class="price-note">One-time payment</div>
+      <ul class="price-features">
+        <li>10-page custom website</li>
+        <li>Premium animations & effects</li>
+        <li>1 year free hosting</li>
+        <li>Domain + management free</li>
+        <li>SEO optimization</li>
+        <li>Analytics dashboard</li>
+        <li>Priority 48h delivery</li>
+      </ul>
+      <a href="https://t.me/zxlpvx" target="_blank" class="price-cta"><span>Get Started</span></a>
+    </div>
+    <div class="pricing-card reveal reveal-delay-2">
+      <div class="price-tier">Business</div>
+      <div class="price-amount"><span class="currency">$</span>499</div>
+      <div class="price-note">One-time payment</div>
+      <ul class="price-features">
+        <li>Unlimited pages</li>
+        <li>E-commerce ready</li>
+        <li>1 year free hosting</li>
+        <li>Domain + full management</li>
+        <li>Custom animations & branding</li>
+        <li>Monthly maintenance included</li>
+        <li>Priority 24h delivery</li>
+      </ul>
+      <a href="https://t.me/zxlpvx" target="_blank" class="price-cta"><span>Get Started</span></a>
+    </div>
+  </div>
+</section>
+
+<section id="contact">
+  <div class="contact-eyebrow">Let's Begin</div>
+  <h2 class="contact-title">Your site.<br><em>72 hours away.</em></h2>
+  <p class="contact-sub">Message us on Telegram and we'll get your project started today.</p>
+  <a href="https://t.me/zxlpvx" target="_blank" class="contact-card reveal">
+    <div class="contact-icon">
+      <svg width="32" height="32" fill="none" viewBox="0 0 24 24"><path d="M21.8 2.2L1.5 9.9c-.8.3-.8 1.4 0 1.7l5.1 1.9L18.4 5c.4-.3.9.3.5.6L8.1 15.2v3.6c0 .9 1.2 1.2 1.7.5l2.5-2.9 5.2 1.9c.7.3 1.5-.2 1.6-1l2.6-14.2c.2-.9-.6-1.6-1.4-1.4h-.5z" fill="#C9A84C"/></svg>
+    </div>
+    <div class="contact-details">
+      <div class="contact-via">Reach us on</div>
+      <div class="contact-handle">t.me/zxlpvx</div>
+    </div>
+  </a>
+  <div class="contact-promise reveal">
+    <div class="promise-item"><span class="promise-num shimmer-text">72h</span><span class="promise-text">Delivery</span></div>
+    <div class="promise-item"><span class="promise-num shimmer-text">1yr</span><span class="promise-text">Free Hosting</span></div>
+    <div class="promise-item"><span class="promise-num shimmer-text">∞</span><span class="promise-text">Revisions</span></div>
+  </div>
+</section>
+
+<footer>
+  <div class="footer-logo">NUVARYN</div>
+  <div class="footer-copy">© 2025 Nuvaryn. All rights reserved.</div>
+  <div class="footer-tagline">Crafted for the discerning.</div>
+</footer>
+
+<script>
+// CURSOR
+const cursor = document.getElementById('cursor');
+const ring = document.getElementById('cursor-ring');
+let mx=0,my=0,rx=0,ry=0;
+document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;});
+function animateCursor(){
+  cursor.style.left=mx+'px';cursor.style.top=my+'px';
+  rx+=(mx-rx)*0.12;ry+=(my-ry)*0.12;
+  ring.style.left=rx+'px';ring.style.top=ry+'px';
+  requestAnimationFrame(animateCursor);
+}
+animateCursor();
+document.querySelectorAll('a,button').forEach(el=>{
+  el.addEventListener('mouseenter',()=>{cursor.style.transform='translate(-50%,-50%) scale(2.5)';ring.style.width='60px';ring.style.height='60px';ring.style.borderColor='rgba(201,168,76,0.8)';});
+  el.addEventListener('mouseleave',()=>{cursor.style.transform='translate(-50%,-50%) scale(1)';ring.style.width='36px';ring.style.height='36px';ring.style.borderColor='rgba(201,168,76,0.5)';});
+});
+
+// ANIMATED GRID BG
+const canvas=document.getElementById('bg-canvas');
+const ctx=canvas.getContext('2d');
+function resize(){canvas.width=window.innerWidth;canvas.height=window.innerHeight;}
+resize();window.addEventListener('resize',resize);
+let t=0;
+function drawGrid(){
+  ctx.clearRect(0,0,canvas.width,canvas.height);
+  ctx.lineWidth=0.5;
+  const sp=70;
+  for(let x=0;x<canvas.width+sp;x+=sp){
+    const w=Math.sin(t*0.008+x*0.015)*8;
+    ctx.strokeStyle=`rgba(201,168,76,${0.04+0.02*Math.sin(t*0.01+x*0.02)})`;
+    ctx.beginPath();ctx.moveTo(x,0);ctx.lineTo(x+w,canvas.height);ctx.stroke();
+  }
+  for(let y=0;y<canvas.height+sp;y+=sp){
+    const w=Math.cos(t*0.006+y*0.015)*8;
+    ctx.strokeStyle=`rgba(201,168,76,${0.03+0.02*Math.cos(t*0.01+y*0.02)})`;
+    ctx.beginPath();ctx.moveTo(0,y+w);ctx.lineTo(canvas.width,y);ctx.stroke();
+  }
+  t++;requestAnimationFrame(drawGrid);
+}
+drawGrid();
+
+// REVEAL
+const obs=new IntersectionObserver(entries=>{entries.forEach(e=>{if(e.isIntersecting)e.target.classList.add('visible');});},{threshold:0.15});
+document.querySelectorAll('.reveal,.process-step').forEach(el=>obs.observe(el));
+
+// COUNTERS
+const cObs=new IntersectionObserver(entries=>{
+  entries.forEach(e=>{
+    if(!e.isIntersecting)return;
+    const el=e.target,target=+el.dataset.target;
+    let cur=0;const step=target/60;
+    const timer=setInterval(()=>{cur=Math.min(cur+step,target);el.textContent=Math.floor(cur);if(cur>=target)clearInterval(timer);},16);
+    cObs.unobserve(el);
+  });
+},{threshold:0.5});
+document.querySelectorAll('.counter').forEach(el=>cObs.observe(el));
+
+// BARS
+const bObs=new IntersectionObserver(entries=>{
+  entries.forEach(e=>{
+    if(!e.isIntersecting)return;
+    document.querySelectorAll('.bar').forEach((b,i)=>setTimeout(()=>b.classList.add('animate'),i*200));
+    bObs.unobserve(e.target);
+  });
+},{threshold:0.3});
+const bEl=document.getElementById('bar-chart');
+if(bEl)bObs.observe(bEl);
+
+// DONUT
+function initDonut(){
+  const c=document.getElementById('donut-canvas');if(!c)return;
+  const ct=c.getContext('2d');
+  const data=[{v:35,col:'#C9A84C'},{v:30,col:'#7A6228'},{v:20,col:'#E8C96B'},{v:15,col:'#3D3010'}];
+  let prog=0;
+  function draw(){
+    ct.clearRect(0,0,160,160);
+    ct.beginPath();ct.arc(80,80,70,0,Math.PI*2);ct.fillStyle='rgba(201,168,76,0.04)';ct.fill();
+    let s=-Math.PI/2;
+    data.forEach(d=>{const a=(d.v/100)*Math.PI*2*Math.min(prog,1);ct.beginPath();ct.moveTo(80,80);ct.arc(80,80,70,s,s+a);ct.closePath();ct.fillStyle=d.col;ct.fill();s+=a;});
+    ct.beginPath();ct.arc(80,80,44,0,Math.PI*2);ct.fillStyle='#060608';ct.fill();
+    if(prog<1){prog+=0.025;requestAnimationFrame(draw);}
+  }
+  const dO=new IntersectionObserver(en=>{if(en[0].isIntersecting){draw();dO.disconnect();}},{threshold:0.3});
+  dO.observe(c);
+}
+initDonut();
+
+// LINE
+function initLine(){
+  const c=document.getElementById('line-canvas');if(!c)return;
+  const ct=c.getContext('2d');
+  const W=c.width,H=c.height;
+  const pts=[5,12,18,22,30,40,52,65,80,95,110,130];
+  const max=150;
+  let prog=0;
+  function draw(){
+    ct.clearRect(0,0,W,H);
+    const count=Math.max(2,Math.floor(pts.length*Math.min(prog,1)));
+    const sx=W/(pts.length-1);
+    ct.strokeStyle='rgba(201,168,76,0.1)';ct.lineWidth=1;
+    for(let i=0;i<=4;i++){const yp=H-(i/4)*H;ct.beginPath();ct.moveTo(0,yp);ct.lineTo(W,yp);ct.stroke();}
+    const g=ct.createLinearGradient(0,0,0,H);g.addColorStop(0,'rgba(201,168,76,0.2)');g.addColorStop(1,'rgba(201,168,76,0)');
+    ct.beginPath();ct.moveTo(0,H);
+    for(let i=0;i<count;i++){const x=i*sx,y=H-(pts[i]/max)*H;ct.lineTo(x,y);}
+    ct.lineTo((count-1)*sx,H);ct.closePath();ct.fillStyle=g;ct.fill();
+    ct.beginPath();ct.strokeStyle='#C9A84C';ct.lineWidth=2;
+    for(let i=0;i<count;i++){const x=i*sx,y=H-(pts[i]/max)*H;i===0?ct.moveTo(x,y):ct.lineTo(x,y);}
+    ct.stroke();
+    for(let i=0;i<count;i++){const x=i*sx,y=H-(pts[i]/max)*H;ct.beginPath();ct.arc(x,y,3,0,Math.PI*2);ct.fillStyle='#C9A84C';ct.fill();}
+    ct.fillStyle='rgba(201,168,76,0.4)';ct.font='10px Josefin Sans';ct.textAlign='center';
+    ['Jan','Mar','May','Jul','Sep','Nov'].forEach((m,i)=>ct.fillText(m,i*sx*2,H-4));
+    if(prog<1){prog+=0.03;requestAnimationFrame(draw);}
+  }
+  const lO=new IntersectionObserver(en=>{if(en[0].isIntersecting){draw();lO.disconnect();}},{threshold:0.3});
+  lO.observe(c);
+}
+initLine();
+
+// GAUGE
+function initGauge(){
+  const c=document.getElementById('gauge-canvas');if(!c)return;
+  const ct=c.getContext('2d');
+  let val=0;
+  function draw(){
+    ct.clearRect(0,0,260,150);
+    const cx=130,cy=130,r=110;
+    ct.beginPath();ct.arc(cx,cy,r,-Math.PI,0);ct.strokeStyle='rgba(201,168,76,0.1)';ct.lineWidth=14;ct.lineCap='round';ct.stroke();
+    for(let i=0;i<=10;i++){const a=-Math.PI+(i/10)*Math.PI;const x1=cx+(r-22)*Math.cos(a),y1=cy+(r-22)*Math.sin(a),x2=cx+(r-8)*Math.cos(a),y2=cy+(r-8)*Math.sin(a);ct.beginPath();ct.moveTo(x1,y1);ct.lineTo(x2,y2);ct.strokeStyle=i<=val/10?'rgba(201,168,76,0.7)':'rgba(201,168,76,0.15)';ct.lineWidth=i%5===0?2:1;ct.stroke();}
+    const g=ct.createLinearGradient(cx-r,cy,cx+r,cy);g.addColorStop(0,'#7A6228');g.addColorStop(1,'#E8C96B');
+    ct.beginPath();ct.arc(cx,cy,r,-Math.PI,-Math.PI+(val/100)*Math.PI);ct.strokeStyle=g;ct.lineWidth=14;ct.lineCap='round';ct.stroke();
+    const na=-Math.PI+(val/100)*Math.PI;
+    ct.beginPath();ct.moveTo(cx+10*Math.cos(na+Math.PI/2),cy+10*Math.sin(na+Math.PI/2));ct.lineTo(cx+(r-28)*Math.cos(na),cy+(r-28)*Math.sin(na));ct.lineTo(cx+10*Math.cos(na-Math.PI/2),cy+10*Math.sin(na-Math.PI/2));ct.closePath();ct.fillStyle='#C9A84C';ct.fill();
+    ct.beginPath();ct.arc(cx,cy,8,0,Math.PI*2);ct.fillStyle='#C9A84C';ct.fill();
+  }
+  const gO=new IntersectionObserver(en=>{
+    if(!en[0].isIntersecting)return;
+    function animate(){val=Math.min(val+1.8,96);draw();if(val<96)requestAnimationFrame(animate);}
+    animate();gO.disconnect();
+  },{threshold:0.3});
+  gO.observe(c);
+}
+initGauge();
+
+// PARALLAX
+window.addEventListener('scroll',()=>{
+  const s=window.scrollY;
+  const ht=document.querySelector('.hero-title');
+  if(ht)ht.style.transform=`translateY(${s*0.18}px)`;
+});
+
+// PROCESS DELAYS
+document.querySelectorAll('.process-step').forEach((s,i)=>s.style.transitionDelay=`${i*0.15}s`);
+</script>
 </body>
 </html>
